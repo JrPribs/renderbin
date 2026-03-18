@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RenderBin Preview - {{formatLabel}}</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="RenderBin - {{formatLabel}} Preview">
+  <meta property="og:description" content="A rendered {{formatLabel}} preview on RenderBin. View it before it expires.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="preview-bar">
+    <div class="preview-bar-left">
+      <a href="/" class="logo">
+        <img src="/favicon.svg" alt="" width="22" height="22">
+        <span>RenderBin</span>
+      </a>
+      <span class="badge badge-format">{{formatLabel}}</span>
+    </div>
+    <div class="preview-bar-right">
+      <span class="badge badge-time" id="time-badge" data-expires="{{expiresAt}}">{{timeRemaining}}</span>
+      <a href="/raw/{{id}}" class="btn btn-secondary btn-small">View Source</a>
+    </div>
+  </div>
+
+  {{PREVIEW_CONTENT}}
+
+  <script>
+    // Countdown timer
+    (function() {
+      const badge = document.getElementById('time-badge');
+      const expiresAt = parseInt(badge.dataset.expires, 10);
+
+      function update() {
+        const now = Math.floor(Date.now() / 1000);
+        const remaining = expiresAt - now;
+
+        if (remaining <= 0) {
+          badge.textContent = 'Expired';
+          badge.classList.add('expiring');
+          setTimeout(() => window.location.reload(), 1500);
+          return;
+        }
+
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        badge.textContent = m + 'm ' + String(s).padStart(2, '0') + 's';
+
+        if (remaining < 120) {
+          badge.classList.add('expiring');
+        }
+
+        requestAnimationFrame(() => setTimeout(update, 1000));
+      }
+
+      update();
+    })();
+  </script>
+</body>
+</html>

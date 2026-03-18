@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RenderBin - Raw Source</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="raw-header">
+    <div class="raw-header-left">
+      <a href="/" class="logo">
+        <img src="/favicon.svg" alt="" width="22" height="22">
+        <span>RenderBin</span>
+      </a>
+      <span class="badge badge-format">{{formatLabel}} Source</span>
+    </div>
+    <div class="raw-actions">
+      <button type="button" class="btn btn-secondary btn-small" id="copy-raw-btn">Copy</button>
+      <a href="/p/{{id}}" class="btn btn-primary btn-small">View Rendered</a>
+    </div>
+  </div>
+
+  <div class="raw-content">
+    <pre id="raw-code">{{rawContent}}</pre>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    document.getElementById('copy-raw-btn').addEventListener('click', function() {
+      const code = document.getElementById('raw-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('toast');
+        toast.textContent = 'Copied to clipboard!';
+        toast.classList.add('visible');
+        setTimeout(() => toast.classList.remove('visible'), 2000);
+      });
+    });
+  </script>
+</body>
+</html>

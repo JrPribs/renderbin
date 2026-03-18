@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online HTML Viewer & Preview Tool - RenderBin</title>
+  <meta name="description" content="Paste your HTML code and instantly see a rendered preview. Share the preview link with anyone. Free, no signup required. The fastest online HTML viewer and preview tool.">
+  <meta property="og:title" content="Free Online HTML Viewer & Preview Tool - RenderBin">
+  <meta property="og:description" content="Paste HTML, see it rendered instantly, and share a preview link. No signup required.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <a href="/" class="logo">
+      <img src="/favicon.svg" alt="" width="28" height="28">
+      <span>RenderBin</span>
+    </a>
+    <div class="nav-links">
+      <a href="/html-viewer">HTML Viewer</a>
+      <a href="/markdown-viewer">Markdown Viewer</a>
+    </div>
+  </nav>
+
+  <section class="seo-hero">
+    <h1>Free Online HTML Viewer & Preview Tool</h1>
+    <p>Paste your HTML code below and instantly get a shareable rendered preview. No signup, no downloads.</p>
+  </section>
+
+  <section class="editor-section">
+    <div class="editor-toolbar">
+      <div class="format-toggle">
+        <button type="button" id="btn-html" class="active">HTML</button>
+        <button type="button" id="btn-markdown">Markdown</button>
+      </div>
+      <span class="toolbar-hint">Cmd+Enter to render</span>
+    </div>
+    <div class="editor-wrapper">
+      <div id="editor"></div>
+    </div>
+    <button type="button" id="render-btn" class="btn btn-primary">
+      Render & Share
+    </button>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal">
+      <h2>Preview Ready!</h2>
+      <p>Your rendered preview is live. Share the link below.</p>
+      <div class="modal-url">
+        <input type="text" id="share-url" readonly>
+        <button type="button" class="btn btn-secondary btn-small" id="copy-url-btn">Copy</button>
+      </div>
+      <div class="modal-actions">
+        <a href="#" id="open-preview-btn" class="btn btn-primary btn-small" target="_blank">Open Preview</a>
+        <button type="button" class="btn btn-secondary btn-small" id="close-modal-btn">New Paste</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Preview HTML Code Online Instantly</h2>
+    <p>RenderBin's HTML viewer lets you paste any HTML code and see exactly how it renders in the browser. Whether you're building an email template, testing a landing page snippet, or debugging layout issues, RenderBin gives you a clean, shareable preview in seconds.</p>
+
+    <h2>How to Use the HTML Viewer</h2>
+    <ul>
+      <li>Paste or type your HTML code in the editor above</li>
+      <li>Click "Render & Share" or press Cmd+Enter</li>
+      <li>Get a unique URL to your rendered HTML preview</li>
+      <li>Share the link with teammates, clients, or on social media</li>
+    </ul>
+
+    <h2>Perfect For</h2>
+    <ul>
+      <li>Previewing HTML email templates before sending</li>
+      <li>Sharing HTML snippets with your team</li>
+      <li>Testing responsive layouts on different devices</li>
+      <li>Quick prototyping of HTML components</li>
+      <li>Debugging CSS and HTML rendering issues</li>
+    </ul>
+
+    <h2>Secure & Private</h2>
+    <p>All HTML is sanitized using DOMPurify to prevent XSS attacks. Previews render in sandboxed iframes. All pastes automatically expire after 10 minutes, and we never store personal information.</p>
+  </section>
+
+  <footer class="footer">
+    RenderBin &mdash; Paste, render, and share. Built for developers.
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>window.__defaultFormat = 'html';</script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
