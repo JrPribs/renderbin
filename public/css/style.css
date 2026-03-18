@@ -235,6 +235,9 @@ a:hover {
 .btn-primary {
   background: var(--primary);
   color: white;
+}
+
+#render-btn {
   width: 100%;
   justify-content: center;
   margin-top: 16px;

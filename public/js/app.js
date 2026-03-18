@@ -3,7 +3,13 @@ import { EditorState } from 'https://esm.sh/@codemirror/state@6.5.2';
 import { html } from 'https://esm.sh/@codemirror/lang-html@6.4.9';
 import { markdown } from 'https://esm.sh/@codemirror/lang-markdown@6.3.2';
 import { oneDark } from 'https://esm.sh/@codemirror/theme-one-dark@6.1.2';
-import { keymap } from 'https://esm.sh/@codemirror/view@6.36.5';
+import { keymap, placeholder } from 'https://esm.sh/@codemirror/view@6.36.5';
+
+// --- Placeholder content ---
+const placeholders = {
+  html: `<h1>Hello, World!</h1>\n<p>Paste your HTML here and click <strong>Render & Share</strong>.</p>`,
+  markdown: `# Hello, World!\n\nPaste your **Markdown** here and click **Render & Share**.`,
+};
 
 // --- State ---
 let currentFormat = window.__defaultFormat || 'html';
@@ -66,9 +72,11 @@ function createEditor() {
       getLanguage(),
       oneDark,
       submitKeymap,
+      placeholder(placeholders[currentFormat]),
       EditorView.theme({
         '&': { backgroundColor: '#1A1A2E' },
         '.cm-gutters': { backgroundColor: '#1A1A2E', borderRight: '1px solid #2A2A40' },
+        '.cm-placeholder': { color: '#606080', fontStyle: 'italic' },
       }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged && !window.__defaultFormat) {
@@ -76,7 +84,7 @@ function createEditor() {
           if (content.length > 5 && content.length < 50) {
             const detected = detectFormat(content);
             if (detected && detected !== currentFormat) {
-              setFormat(detected, false);
+              setFormat(detected);
             }
           }
         }
@@ -116,9 +124,11 @@ function setFormat(format, recreate = true) {
         getLanguage(),
         oneDark,
         submitKeymap,
+        placeholder(placeholders[currentFormat]),
         EditorView.theme({
           '&': { backgroundColor: '#1A1A2E' },
           '.cm-gutters': { backgroundColor: '#1A1A2E', borderRight: '1px solid #2A2A40' },
+          '.cm-placeholder': { color: '#606080', fontStyle: 'italic' },
         }),
       ],
     });
@@ -197,6 +207,12 @@ closeModalBtn.addEventListener('click', () => {
 
 modal.addEventListener('click', (e) => {
   if (e.target === modal) {
+    modal.classList.remove('visible');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('visible')) {
     modal.classList.remove('visible');
   }
 });
