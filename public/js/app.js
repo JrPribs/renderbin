@@ -1,9 +1,20 @@
-import { EditorView, basicSetup } from 'https://esm.sh/@codemirror/basic-setup@0.20.0';
-import { EditorState } from 'https://esm.sh/@codemirror/state@6.5.2';
-import { html } from 'https://esm.sh/@codemirror/lang-html@6.4.9';
-import { markdown } from 'https://esm.sh/@codemirror/lang-markdown@6.3.2';
-import { oneDark } from 'https://esm.sh/@codemirror/theme-one-dark@6.1.2';
-import { keymap, placeholder } from 'https://esm.sh/@codemirror/view@6.36.5';
+// Pin shared deps so esm.sh deduplicates @codemirror/state & /view into one instance.
+const _cm = '@codemirror/state@6.5.2,@codemirror/view@6.36.5';
+const [
+  { basicSetup },
+  { EditorState },
+  { html },
+  { markdown },
+  { oneDark },
+  { EditorView, keymap, placeholder },
+] = await Promise.all([
+  import(`https://esm.sh/@codemirror/basic-setup@0.20.0?deps=${_cm}`),
+  import(`https://esm.sh/@codemirror/state@6.5.2`),
+  import(`https://esm.sh/@codemirror/lang-html@6.4.9?deps=${_cm}`),
+  import(`https://esm.sh/@codemirror/lang-markdown@6.3.2?deps=${_cm}`),
+  import(`https://esm.sh/@codemirror/theme-one-dark@6.1.2?deps=${_cm}`),
+  import(`https://esm.sh/@codemirror/view@6.36.5?deps=@codemirror/state@6.5.2`),
+]);
 
 // --- Placeholder content ---
 const placeholders = {
@@ -139,7 +150,7 @@ function setFormat(format, recreate = true) {
 
 // --- Submit ---
 async function handleSubmit() {
-  if (submitting) return;
+  if (submitting || !editor) return;
 
   const content = editor.state.doc.toString().trim();
   if (!content) {
@@ -218,4 +229,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // --- Init ---
-createEditor();
+try {
+  createEditor();
+} catch (err) {
+  console.error('CodeMirror failed to initialise:', err);
+  editorEl.textContent = 'Editor failed to load — please refresh the page.';
+}
